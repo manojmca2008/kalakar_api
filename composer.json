@@ -39,7 +39,9 @@
             "Application\\": "module/Application/src/",
             "User\\": "module/User/src/",
             "MCommons\\": "vendor/MCommons/src/",
-            "Rest\\":"module/Rest/src"
+            "Rest\\":"module/Rest/src",
+            "Cms\\": "module/Cms/src/",
+            "Email\\": "module/Email/src/"
         }
     },
     "autoload-dev": {

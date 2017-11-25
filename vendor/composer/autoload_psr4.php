@@ -56,6 +56,8 @@ return array(
     'Google\\Auth\\' => array($vendorDir . '/google/auth/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Facebook\\' => array($vendorDir . '/facebook/graph-sdk/src/Facebook'),
+    'Email\\' => array($baseDir . '/module/Email/src'),
+    'Cms\\' => array($baseDir . '/module/Cms/src'),
     'Application\\' => array($baseDir . '/module/Application/src'),
     'ApplicationTest\\' => array($baseDir . '/module/Application/test'),
 );
