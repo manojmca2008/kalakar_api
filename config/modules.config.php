@@ -28,6 +28,7 @@ return [
     'Application',
     'User',
     'Rest',
-    'Email',
     'Admin',
+    'Emails',
+    'Time'
 ];

@@ -1,10 +1,9 @@
 <?php
 
-namespace Admin\Controller;
-
+namespace Emails\Controller;
 use MCommons\Controller\AbstractRestfulController;
 
-class TestController extends AbstractRestfulController {
+class MytestController extends AbstractRestfulController {
 
     public function getList() {
        echo "asass";die;

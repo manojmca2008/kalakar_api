@@ -21,7 +21,7 @@ return [
             'user' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/api/user[/:id]',
+                    'route'    => '/api/user/user[/:id]',
                     'constraints' => [
                         'id'     => '[a-zA-Z0-9]+',
                     ],

@@ -40,8 +40,10 @@
             "User\\": "module/User/src/",
             "MCommons\\": "vendor/MCommons/src/",
             "Rest\\":"module/Rest/src",
-            "Email\\": "module/Email/src/",
-            "Admin\\": "module/Admin/src/"
+            "Admin\\": "module/Admin/src/",
+            "Emails\\": "module/Emails/src/",
+            "Time\\": "module/Time/src/",
+            "ApplicationTest\\": "module/Application/test/"
         }
     },
     "autoload-dev": {
