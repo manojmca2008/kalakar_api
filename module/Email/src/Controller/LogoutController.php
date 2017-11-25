@@ -1,6 +1,6 @@
 <?php
 
-namespace Cms\Controller;
+namespace Email\Controller;
 
 use MCommons\Controller\AbstractRestfulController;
 

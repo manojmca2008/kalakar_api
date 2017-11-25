@@ -1,10 +1,7 @@
 <?php
 
-namespace Cms\Controller;
+namespace Email\Controller;
 
-use User\Form\UserForm;
-use User\InputFilter\FormUserFilter;
-use User\Model\User;
 use MCommons\Controller\AbstractRestfulController;
 
 class UserController extends AbstractRestfulController {
