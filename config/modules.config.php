@@ -28,7 +28,6 @@ return [
     'Application',
     'User',
     'Rest',
-    'Cms',
     'Email',
     'Admin',
 ];
