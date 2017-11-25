@@ -41,7 +41,8 @@
             "MCommons\\": "vendor/MCommons/src/",
             "Rest\\":"module/Rest/src",
             "Cms\\": "module/Cms/src/",
-            "Email\\": "module/Email/src/"
+            "Email\\": "module/Email/src/",
+            "Admin\\": "module/Admin/src/"
         }
     },
     "autoload-dev": {

@@ -29,5 +29,6 @@ return [
     'User',
     'Rest',
     'Cms',
-    'Email'
+    'Email',
+    'Admin',
 ];

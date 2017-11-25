@@ -14,7 +14,7 @@ class TestController extends AbstractRestfulController {
         $variables = [];
         $subject = 'this is a test mail';
         $attachment = 'upload/pexels-photo.jpg';
-          $mail = \MCommons\StaticFunctions::sendMail($sender, $sendername, $recievers, $template, $layout, $variables, $subject,$attachment);
+        $mail = \MCommons\StaticFunctions::sendMail($sender, $sendername, $recievers, $template, $layout, $variables, $subject,$attachment);
 //        $config = \MCommons\StaticFunctions::getServiceLocator()->get('config');
 //        //pr($config);die;
 //        $sender = 'manoj841922@gmail.com';

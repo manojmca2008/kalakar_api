@@ -60,4 +60,5 @@ return array(
     'Cms\\' => array($baseDir . '/module/Cms/src'),
     'Application\\' => array($baseDir . '/module/Application/src'),
     'ApplicationTest\\' => array($baseDir . '/module/Application/test'),
+    'Admin\\' => array($baseDir . '/module/Admin/src'),
 );
