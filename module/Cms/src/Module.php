@@ -20,31 +20,7 @@ class Module implements ConfigProviderInterface {
                 Resources::getBasePath(), Resources::getPatternForValidator()
         );
         AbstractValidator::setDefaultTranslator($translator);
-        // $eventManager = $e->getApplication()->getEventManager();
-        // $eventManager->attach('render', array($this, 'registerJsonStrategy'), 100);
     }
-
-//    public function registerJsonStrategy(\Zend\Mvc\MvcEvent $e) {
-//        $matches = $e->getRouteMatch();
-//        $controller = $matches->getParam('controller');
-//        if (false === strpos($controller, __NAMESPACE__)) {
-//            // not a controller from this module
-//            return;
-//        }
-//
-//        // Potentially, you could be even more selective at this point, and test
-//        // for specific controller classes, and even specific actions or request
-//        // methods.
-//        // Set the JSON model when controllers from this module are selected
-//        $model = $e->getResult();
-//
-//        if ($model instanceof \Zend\View\Model\ViewModel) {
-//            $newModel = new \Zend\View\Model\JsonModel($model->getVariables());
-//            //$e->setResult($newModel);
-//            $e->setViewModel($newModel);
-//        }
-//    }
-
     public function getConfig() {
         return include __DIR__ . '/../config/module.config.php';
     }

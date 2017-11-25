@@ -370,65 +370,34 @@ class StaticFunctions {
 
     public static function sendMail($sender, $sendername, $recievers, $template, $layout, $variables, $subject) {
         $config = self::getServiceLocator()->get('config');
-        // Create a layout view so that it can set content as sub view
-        $layoutView = new ViewModel();
-        // create the sub view
-        $view = new ViewModel();
+        $layoutView = new \Zend\View\Model\ViewModel();
+        $view = new \Zend\View\Model\ViewModel();
         $layoutView->setTemplate($layout);
-
-        $variables['hostname'] = isset($variables['hostname']) ? $variables['hostname'] : PROTOCOL . $config['constants']['web_url'];
-        $view->setVariables($variables);
         $view->setTemplate($template);
+
         try {
             $renderer = self::getServiceLocator()->get('ViewRenderer');
         } catch (\Exception $ex) {
             // It is useful resque email
-            $renderer = new PhpRenderer();
+            $renderer = new \Zend\View\Renderer\PhpRenderer();
             $templateMaps = $config['view_manager']['template_map'];
             $resolver = new \Zend\View\Resolver\TemplateMapResolver($templateMaps);
             $renderer->setResolver($resolver);
         }
 
         $content = $renderer->render($view);
-        $layoutVariables = array(
-            'content' => $content,
-            'web_url' => PROTOCOL . $config['constants']['web_url'],
-            'order_url' => PROTOCOL . $config['constants']['web_url'] . "/order",
-            'reserve_url' => PROTOCOL . $config['constants']['web_url'] . "/reserve",
-            'privacy_url' => PROTOCOL . $config['constants']['web_url'] . "/privacy",
-            'terms_url' => PROTOCOL . $config['constants']['web_url'] . "/terms",
-            'support_url' => PROTOCOL . $config['constants']['web_url'] . "/support"
-        );
-        $layoutView->setVariables($layoutVariables);
-        $content = $renderer->render($layoutView);
-        if (is_array($recievers)) {
-            foreach ($recievers as $reciever) {
-                $settingUserDb = self::getServiceLocator()->get(\User\Model\User::class);
-                $getMailerId = $settingUserDb->getUserEmailSubscriber($reciever);
-                if (count($getMailerId) > 0 && $getMailerId != '') {
-                    if (!self::getPermissionToSendMail($getMailerId['id'], $template)) {
-                        return true;
-                    }
-                }
-                //pr($content,1);
-                //$mail = new Message();
-                $mail = new Message();
-
-                $mail->setBody($content);
-                $mail->setFrom($sender, $sendername);
-                $mail->setSubject($subject);
-                $mail->setTo($reciever);
-                try {
-                    $mail->Sendmail();
-                } catch (\Exception $e) {
-                    \MUtility\MunchLogger::writeLog($e, 1, $e->getMessage());
-                    continue;
-                }
-            }
-        } else {
-            echo $subject;
-            return true;
-        }
+        //print_r($layoutView);die;
+        //s$content = $renderer->render($layoutView);
+        //print_r($content);
+        //die;
+        $mail = new \MCommons\Message();
+        $mail->setBody($content);
+        $mail->setFrom('Freeaqingme@example.org', 'Sender\'s name');
+        $mail->addTo('manoj841922@gmail.com', 'Name o. recipient');
+        $mail->setSubject('TestSubject');
+        $mail->Sendmail();
+        print_r($mail);
+        die;
     }
 
     /**
@@ -847,4 +816,5 @@ class StaticFunctions {
         $content = $renderer->render($layoutView);
         return $content;
     }
+
 }
