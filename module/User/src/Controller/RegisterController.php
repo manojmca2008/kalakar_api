@@ -7,6 +7,7 @@ use MCommons\Controller\AbstractRestfulController;
 class RegisterController extends AbstractRestfulController {
 
     public function create($data) {
+        print_r($data);die;
         if(isset($data['email']) && empty($data['email'])){
             return $this->response(['error_msg'=>"Email Id Can Not Be Null"]);
         }

@@ -368,13 +368,13 @@ class StaticFunctions {
         }
     }
 
-    public static function sendMail($sender, $sendername, $recievers, $template, $layout, $variables, $subject) {
+    public static function sendMail($data) {
         $config = self::getServiceLocator()->get('config');
         $layoutView = new \Zend\View\Model\ViewModel();
         $view = new \Zend\View\Model\ViewModel();
-        $layoutView->setTemplate($layout);
-        $view->setTemplate($template);
-
+        $layoutView->setTemplate($data['layout']);
+        $view->setVariables($data['variables']);
+        $view->setTemplate($data['template']);
         try {
             $renderer = self::getServiceLocator()->get('ViewRenderer');
         } catch (\Exception $ex) {
@@ -386,18 +386,18 @@ class StaticFunctions {
         }
 
         $content = $renderer->render($view);
-        //print_r($layoutView);die;
-        //s$content = $renderer->render($layoutView);
-        //print_r($content);
-        //die;
-        $mail = new \MCommons\Message();
-        $mail->setBody($content);
-        $mail->setFrom('Freeaqingme@example.org', 'Sender\'s name');
-        $mail->addTo('manoj841922@gmail.com', 'Name o. recipient');
-        $mail->setSubject('TestSubject');
-        $mail->Sendmail();
-        print_r($mail);
-        die;
+        $layoutView->setVariables($data['layoutVariables']);
+        $content = $renderer->render($layoutView);
+        if (is_array($data['receiver'])) {
+            foreach ($data['receiver'] as $reciever) {
+                $mail = new Message();
+                $mail->setBody($content);
+                $mail->setFrom($data['sender'], $data['senderName']);
+                $mail->addTo($reciever);
+                $mail->setSubject($data['subject']);
+                $mail->Sendmail();
+            }
+        }
     }
 
     /**

@@ -4,7 +4,6 @@ namespace Rest;
 
 use Zend\Mvc\MvcEvent;
 use MCommons\StaticFunctions;
-use User\Functions\UserFunctions;
 
 /**
  * Module Management for rest api
@@ -23,35 +22,33 @@ class Module {
      *
      * @param MvcEvent $e        	
      */
-    public function getServiceConfig(){
-       
+    public function getServiceConfig() {
+
         return[
-            'factories' => [ 
-            UserFunctions::class => function( $container){
-                return new UserFunctions();
-            },
-            \MUtility\MunchLogger::class=> function($container){
-                return new \MUtility\MunchLogger();
-            }
-                                               
-             ],
+            'factories' => [
+                UserFunctions::class => function( $container) {
+                    return new UserFunctions();
+                },
+                \MUtility\MunchLogger::class => function($container) {
+                    return new \MUtility\MunchLogger();
+                }
+            ],
         ];
     }
+
     public function onBootstrap(MvcEvent $e) {
         $eventManager = $e->getApplication()->getEventManager();
         $sharedEventManager = $eventManager->getSharedManager();
-        
+
         $sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'addServiceLocator'], 999);
         //$sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'getUserAgent'], 998);
         //$sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'checkAndAddRedis'], 997);
+        //  $sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'authenticate'], 995);
 
-      //  $sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'authenticate'], 995);
-        
         $sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'postProcess'], - 100);
         //$sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'memCacheServiceSetting'], 994);
-
         //Error Handling
-       // $sharedEventManager->attach(\Zend\Mvc\Application::class, MvcEvent::EVENT_DISPATCH_ERROR, [$this,'errorProcess'], 899);
+        $sharedEventManager->attach(\Zend\Mvc\Application::class, MvcEvent::EVENT_DISPATCH_ERROR, [$this, 'errorProcess'], 899);
 //
 //        /**
 //         * Initialize Constants before moving forward
@@ -70,12 +67,12 @@ class Module {
     public function addServiceLocator(MvcEvent $e) {
         return StaticFunctions::setServiceLocator($e->getApplication()->getServiceManager());
     }
-    
+
     public function checkAndAddRedis(MvcEvent $e) {
         $redis_cache = false;
         $sl = $e->getApplication()->getServiceManager();
         $config = $sl->get('config');
-        
+
         if (class_exists('\Redis') && isset($config['constants']['redis']) && !empty($config['constants']['redis']) && $config['constants']['redis']['enabled']) {
             $redisConfig = $config['constants']['redis'];
             try {
@@ -92,35 +89,30 @@ class Module {
                 $redis_cache = false;
             }
         }
-        
+
         $sl->setService("RedisCache", $redis_cache);
     }
-    
-    public function memCacheServiceSetting(MvcEvent $e)
-    {
-        $sl          = $e->getApplication()->getServiceManager();
-        $conf        = $sl->get('config');
+
+    public function memCacheServiceSetting(MvcEvent $e) {
+        $sl = $e->getApplication()->getServiceManager();
+        $conf = $sl->get('config');
         $memCfgArray = $conf['memcached']['servers'];
         //pr($memCfgArray,1);
-        if( count($memCfgArray) )
-        {
+        if (count($memCfgArray)) {
             try {
                 $memOptions = new \Zend\Cache\Storage\Adapter\MemcachedOptions();
                 $memOptions->setServers($memCfgArray);
                 $memOptions->setTtl(7200);
-           
+
                 $objMemcache = new \Zend\Cache\Storage\Adapter\Memcached($memOptions);
-            } 
-            catch (\Exception $ex) {
+            } catch (\Exception $ex) {
                 $objMemcache = false;
             }
         }
-        
+
         $sl->setService("memCachedObject", $objMemcache);
     }
-    
-    
-    
+
     /**
      * Before continuing with any API requests, please check if the token provided by
      * the user is authentic/expired or not
@@ -177,16 +169,16 @@ class Module {
         $version = false;
         if ($isMobile) {
             $http_server = $e->getRequest()->getServer()->toArray();
-            
+
             if (isset($http_server['HTTP_APP_VERSION'])) {
                 $version = $e->getRequest()->getHeader('App-Version')->getFieldValue();
             }
 
             ######### Get Token ########
             $token = isset($queryParams['token']) ? $queryParams['token'] : false;
-            
+
             if (!empty($e->getRequest()->getPost()->toArray())) {
-                $parameters = $e->getRequest()->getPost()->toArray();                
+                $parameters = $e->getRequest()->getPost()->toArray();
                 $token = isset($parameters['token']) ? $parameters['token'] : '';
             }
             if ($e->getRequest()->getHeader('Authorization')) {
@@ -194,11 +186,11 @@ class Module {
                 $authToken = explode(" ", trim($authorization));
                 $token = isset($authToken[1]) ? $authToken[1] : false;
             }
-            
+
             if (!$version && $token) {
-     
+
                 $tokenDetails = $authmodel->findToken($token);
-                
+
                 if (!$tokenDetails) {
                     $vars = array(
                         'error' => 'Invalid/Expired token'
@@ -218,27 +210,26 @@ class Module {
          * @todo: optimize this for common google urls
          */
         $isTokenRoute = $routeMatch->getMatchedRouteName() == 'api-token' || $routeMatch->getMatchedRouteName() == 'wapi-token';
-      
+
         if ($isTokenRoute && ($isPost || $isGet || $isDelete || $isOptions)) {
             return true;
         }
         $authenticator = new \Rest\Authenticators\Authenticate ();
-      
+
         if (!$authenticator->authenticateRequest($e->getRequest(), $sl)) {
-            if (!$version && $isMobile) {                
+            if (!$version && $isMobile) {
                 return true;
             }
-            
+
             $vars = array(
                 'error' => 'Invalid/Expired token'
             );
             $vars = StaticFunctions::formatResponse($vars, 403, 'Invalid/Expired token', 'mobile', false);
-           
-            $response = StaticFunctions::getResponse($sl, $vars, 403);            
+
+            $response = StaticFunctions::getResponse($sl, $vars, 403);
             $e->stopPropagation();
             return $response;
         }
-       
     }
 
     /**
@@ -248,7 +239,7 @@ class Module {
      */
     public function postProcess(MvcEvent $e) {
         $formatter = StaticFunctions::getFormatter();
-       
+
         /**
          *
          * @var \Zend\Di\Di $di
@@ -267,7 +258,7 @@ class Module {
                 $vars = $e->getResult();
             }
 
-            $request = $sl->get('request');            
+            $request = $sl->get('request');
             $requestType = (bool) $request->getQuery('mob', false) ? 'mobile' : 'web';
             $vars = StaticFunctions::formatResponse($vars, 200, 'Success', $requestType);
             $response = StaticFunctions::getResponse($sl, $vars, 200);
@@ -288,7 +279,7 @@ class Module {
         /**
          *
          * @var \Zend\Di\Di $di
-         */ 
+         */
         $sl = $e->getApplication()->getServiceManager();
         $di = $sl->get("Di");
 
@@ -299,7 +290,7 @@ class Module {
          * @var array $configuration
          */
         $configuration = $e->getApplication()->getConfig();
-        
+        //print_r($configuration);die;
 
         $statusCode = \Zend\Http\PhpEnvironment\Response::STATUS_CODE_500;
 
@@ -315,23 +306,17 @@ class Module {
                 $vars ['error-trace'] = $exception->getTrace();
             }
             $statusCode = $exception->getCode() ? $exception->getCode() : $statusCode;
-            
-            if ($configuration ['errors'] ['show_exceptions'] ['message']) 
-            {
-                if($statusCode==2002)
-                {
+
+            if ($configuration ['errors'] ['show_exceptions'] ['message']) {
+                if ($statusCode == 2002) {
                     $reasonPhrase = "Mysql: Either Invalid host name or Server is stopped. Please check and correct";
-                }
-                else if ( $statusCode == 1045)
-                {
-                    $reasonPhrase = "Mysql: Invalid password";
-                }
-                else
-                {  
+                } else if ($statusCode == 1045) {
+                    $reasonPhrase = "Mysql: Invalid Username OR password";
+                } else {
                     $reasonPhrase = $exception->getMessage();
                 }
-                
-                $vars ['error'] = $reasonPhrase ;
+
+                $vars ['error'] = $reasonPhrase;
             }
         }
         if (empty($vars)) {
@@ -375,10 +360,10 @@ class Module {
 
         $request = $sl->get('request');
         $requestType = (bool) $request->getQuery('mob', false) ? 'mobile' : 'web';
-        
+
         $this->addServiceLocator($e);
         $vars = StaticFunctions::formatResponse($vars, $statusCode, $vars ['error'], $requestType);
-        
+
 
         $postProcessor = $di->get($formatter . "_processor", array(
             'vars' => $vars,
@@ -388,28 +373,28 @@ class Module {
         $postProcessor->process();
 
         $e->stopPropagation();
-        
+
         /* ---------------  To Mongo [Starts]---------------------- */
-        $env            =   getenv('APPLICATION_ENV');
-        $mongoConf      =   $config['mongo'][$env];
-        $objHost        =   new \MongoDB\Client($mongoConf['host']);
-        $objDatabase    =   $objHost->selectDatabase($mongoConf['database']);
-        $objCollection  =   $objDatabase->selectCollection("exceptions");
+        $env = getenv('APPLICATION_ENV');
+        //$mongoConf      =   $config['mongo'][$env];
+        //$objHost        =   new \MongoDB\Client($mongoConf['host']);
+        //$objDatabase    =   $objHost->selectDatabase($mongoConf['database']);
+        //$objCollection  =   $objDatabase->selectCollection("exceptions");
         //pr($vars);
-        $data   =   array();
-        $data['original_msg']   =   $exception->getMessage() ; 
-        $data['msg_shown']      =   $vars['message'] ;
-        $data['statusCode']     =   $statusCode;
+        $data = array();
+        $data['original_msg'] = $exception->getMessage();
+        $data['msg_shown'] = $vars['message'];
+        $data['statusCode'] = $statusCode;
         //$data['stack_trace']    =   $exception->getTrace();
-        $data['file']           =   $exception->getFile();
-        $data['line']           =   $exception->getLine();
-        
-        $data['exception_time'] =   date('Y-m-d H:i:s',time());
-        $data['url']            =   $e->getRequest()->getUriString();
-                
-        $objCollection->insertOne($data);
+        $data['file'] = $exception->getFile();
+        $data['line'] = $exception->getLine();
+
+        $data['exception_time'] = date('Y-m-d H:i:s', time());
+        $data['url'] = $e->getRequest()->getUriString();
+
+        //$objCollection->insertOne($data);
         /* ---------------  To Mongo [Ends]------------------------ */
-        
+
         return $postProcessor->getResponse();
     }
 
@@ -435,7 +420,7 @@ class Module {
 //        return false;
 //    }
 //$this->_request->getHeaders()->get('User-Agent')
-    public function getUserAgent(MvcEvent $e) {  
+    public function getUserAgent(MvcEvent $e) {
         return StaticFunctions::setUserAgent($e->getRequest()->getHeader('User-Agent'));
     }
 

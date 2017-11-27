@@ -57,7 +57,7 @@ return [
             'user-register' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/api/register',
+                    'route'    => '/api/user/register',
                     'constraints' => [
                         'id'     => '[a-zA-Z0-9]+',
                     ],

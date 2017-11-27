@@ -54,6 +54,7 @@ class Message extends \Zend\Mail\Message {
 
     protected function getSmtpOptions() {
         $config = StaticFunctions::getServiceLocator()->get('Config');
+       // print_r($config);die;
         return new SmtpOptions(array(
             'name' => 'kalakar.com',
             'host' => $config['constants']['smtp']['host'],

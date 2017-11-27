@@ -37,8 +37,8 @@ class Module implements ConfigProviderInterface {
     public function getControllerConfig() {
         return [
             'factories' => [
-                Controller\MytestController::class => function($container) {
-                    return new Controller\MytestController(
+                Controller\EmailController::class => function($container) {
+                    return new Controller\EmailController(
                             $container->get()
                     );
                 },

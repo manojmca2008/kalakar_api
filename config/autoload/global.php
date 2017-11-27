@@ -60,4 +60,20 @@ return array(
             => 'Zend\Db\Adapter\AdapterServiceFactory',
         ),
     ),
+    'errors' => [
+        'show_exceptions' => [
+            'message' => true,
+            'trace' => true
+       ]
+    ],
+    'di' => [
+        'instance' => [
+            'alias' => [
+                'json_processor' => 'Rest\Processors\Json',
+                'image_processor' => 'Rest\Processors\Image',
+                'xml_processor' => 'Rest\Processors\Xml',
+                'phps_processor' => 'Rest\Processors\Phps'
+            ]
+        ]
+    ],
 );

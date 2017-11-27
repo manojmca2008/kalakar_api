@@ -30,5 +30,7 @@ return [
     'Rest',
     'Admin',
     'Emails',
-    'Time'
+    'Time',
+    'Cms',
+    'Test'
 ];
