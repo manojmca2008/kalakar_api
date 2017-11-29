@@ -41,6 +41,8 @@
             "MCommons\\": "vendor/MCommons/src/",
             "Rest\\":"module/Rest/src",
             "Admin\\": "module/Admin/src/",
+            "Cms\\": "module/Cms/src/",
+            "Test\\": "module/Test/src/",
             "Emails\\": "module/Emails/src/",
             "Time\\": "module/Time/src/",
             "ApplicationTest\\": "module/Application/test/"

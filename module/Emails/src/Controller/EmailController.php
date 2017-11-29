@@ -7,15 +7,18 @@ use MCommons\Controller\AbstractRestfulController;
 class EmailController extends AbstractRestfulController {
 
     public function getList() {
+        echo "asdsads";
+        die;
         $mail = new \MCommons\Message();
         $content = 'this in test mail';
-$mail->setBody($content);
-$mail->setFrom('Freeaqingme@example.org', 'Sender\'s name');
-$mail->addTo('manoj841922@gmail.com', 'Name o. recipient');
-$mail->setSubject('TestSubject');
+        $mail->setBody($content);
+        $mail->setFrom('Freeaqingme@example.org', 'Sender\'s name');
+        $mail->addTo('manoj841922@gmail.com', 'Name o. recipient');
+        $mail->setSubject('TestSubject');
 //$mail->addAttachment($attachment);
-$mail->Sendmail();
-print_r($mail);die;
+        $mail->Sendmail();
+        print_r($mail);
+        die;
         die;
         $template = 'email-template/user-registration';
         $layout = 'email-layout/default';
@@ -35,7 +38,7 @@ print_r($mail);die;
         );
         $data = array(
             'receiver' => ['manoj.s.singhal@gmail.com'],
-             'sender' => 'manoj841922@gmail.com',
+            'sender' => 'manoj841922@gmail.com',
             'senderName' => 'manoj singhal',
             'template' => $template,
             'layout' => $layout,
@@ -44,7 +47,8 @@ print_r($mail);die;
             'layoutVariables' => $layoutVariables
         );
         $mail = \MCommons\StaticFunctions::sendMail($data);
-        print_r($mail);die; 
+        print_r($mail);
+        die;
         //$aconfig = \MCommons\StaticFunctions::getServiceLocator()->get('config');
         //$config = $this->getServiceLocator('config');
         //print_r($aconfig);die;

@@ -382,12 +382,12 @@ class Module {
         //$objCollection  =   $objDatabase->selectCollection("exceptions");
         //pr($vars);
         $data = array();
-        $data['original_msg'] = $exception->getMessage();
+       // $data['original_msg'] = $exception->getMessage();
         $data['msg_shown'] = $vars['message'];
         $data['statusCode'] = $statusCode;
         //$data['stack_trace']    =   $exception->getTrace();
-        $data['file'] = $exception->getFile();
-        $data['line'] = $exception->getLine();
+        //$data['file'] = $exception->getFile();
+      //  $data['line'] = $exception->getLine();
 
         $data['exception_time'] = date('Y-m-d H:i:s', time());
         $data['url'] = $e->getRequest()->getUriString();

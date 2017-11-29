@@ -8,7 +8,7 @@
 return array(
     'db' => [
         'driver' => 'Pdo',
-        'username' => 'manoj',
+        'username' => 'root',
         'password' => 'abc@123',
         'dsn' => 'mysql:host=localhost;dbname=kalakar',
         'driver_options' => [

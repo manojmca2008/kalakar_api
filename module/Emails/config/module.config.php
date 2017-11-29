@@ -9,7 +9,7 @@ return [
             'email-sending' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/api/emails/emailtest[/:id]',
+                    'route'    => '/api/email',
                     'constraints' => [
                         'id'     => '[a-zA-Z0-9]+',
                     ],

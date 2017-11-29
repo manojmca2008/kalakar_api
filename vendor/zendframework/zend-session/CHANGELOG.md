@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.8.1 - 2017-11-28
+
+### Added
+
+- [#92](https://github.com/zendframework/zend-session/pull/92) adds PHP 7.2
+  support.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#57](https://github.com/zendframework/zend-session/pull/57) and
+  [#93](https://github.com/zendframework/zend-session/pull/93) provide a fix
+  for when data found in the session is a `Traversable`; such data is now cast
+  to an array before merging with new data.
+
 ## 2.8.0 - 2017-06-19
 
 ### Added

@@ -11,7 +11,7 @@ return [
                 'options' => [
                     'route'    => '/api/test/form[/:id]',
                     'constraints' => [
-                        'id'     => '[a-zA-Z0-9]+',
+                        'id'     => '[a-zA-Z0-  9]+',
                     ],
                     'defaults' => [
                         'controller' => Controller\TestController::class,

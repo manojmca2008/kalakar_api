@@ -10,7 +10,6 @@ use MCommons\Controller\AbstractRestfulController;
 class UserController extends AbstractRestfulController {
 
     public function getList() {
-        echo "dasdsa";die;
         $aconfig = \MCommons\StaticFunctions::getServiceLocator()->get('config');
         $config = $this->getServiceLocator('config');
         //print_r($aconfig);die;
