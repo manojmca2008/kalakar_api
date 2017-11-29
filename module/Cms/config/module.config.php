@@ -18,6 +18,30 @@ return [
                     ],
                 ],
             ],
+            'cms-signup' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/cms/signup',
+                    'constraints' => [
+                        'id'     => '[a-zA-Z0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\SignupController::class,
+                    ],
+                ],
+            ],
+            'cms-signin' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/cms/signin',
+                    'constraints' => [
+                        'id'     => '[a-zA-Z0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\SigninController::class,
+                    ],
+                ],
+            ],
             'cms-user-detail' => [
                 'type'    => Segment::class,
                 'options' => [

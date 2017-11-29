@@ -55,6 +55,16 @@ class Module implements ConfigProviderInterface {
                             $container->get()
                     );
                 },
+                Controller\SignupController::class => function($container) {
+                    return new Controller\SignupController(
+                            $container->get()
+                    );
+                },
+                Controller\SigninController::class => function($container) {
+                    return new Controller\SigninController(
+                            $container->get()
+                    );
+                },
             ],
         ];
     }
