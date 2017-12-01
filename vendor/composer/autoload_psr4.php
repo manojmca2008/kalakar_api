@@ -63,4 +63,5 @@ return array(
     'Admin\\' => array($baseDir . '/module/Admin/src'),
     'Cms\\' => array($baseDir . '/module/Cms/src'),
     'Test\\' => array($baseDir . '/module/Test/src'),
+    'Invoice\\' => array($baseDir . '/module/Invoice/src'),
 );

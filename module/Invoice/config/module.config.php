@@ -1,32 +1,32 @@
 <?php
-namespace Test;
+namespace Invoice;
 
 use Zend\Router\Http\Segment;
 
 return [
     'router' => [
         'routes' => [
-            'form-test' => [
+            'sms-send' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/api/test/form[/:id]',
+                    'route'    => '/api/invoice/sms-send[/:id]',
                     'constraints' => [
                         'id'     => '[a-zA-Z0-9]+',
                     ],
                     'defaults' => [
-                        'controller' => Controller\TestController::class,
+                        'controller' => Controller\SmsController::class,
                     ],
                 ],
             ],
-            'mongo-test' => [
+            'get-notification' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/api/test/mongo[/:id]',
+                    'route'    => '/api/invoice/notifications[/:id]',
                     'constraints' => [
                         'id'     => '[a-zA-Z0-9]+',
                     ],
                     'defaults' => [
-                        'controller' => Controller\TestingController::class,
+                        'controller' => Controller\NotificationController::class,
                     ],
                 ],
             ],

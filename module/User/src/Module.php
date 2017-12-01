@@ -47,6 +47,15 @@ class Module implements ConfigProviderInterface {
                     $resultSetPrototype = new ResultSet();
                     return new TableGateway('states', $dbAdapter, null, $resultSetPrototype);
                 },
+                Model\PubnubNotification::class => function($container) {
+                    $tableGateway = $container->get('PubnubNotificationGateway');
+                    return new Model\PubnubNotification($tableGateway);
+                },
+                'PubnubNotificationGateway' => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    return new TableGateway('pubnub_notification', $dbAdapter, null, $resultSetPrototype);
+                },
             ],
         ];
     }

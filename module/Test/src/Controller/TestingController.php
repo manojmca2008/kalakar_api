@@ -5,7 +5,7 @@ namespace Test\Controller;
 use MCommons\Controller\AbstractRestfulController;
 use MCommons\FormProcessor;
 
-class TestController extends AbstractRestfulController {
+class TestingController extends AbstractRestfulController {
 
     public function getList() {
         $template = 'email-template/user-registration';
@@ -40,6 +40,7 @@ class TestController extends AbstractRestfulController {
     }
 
     public function create($data) {
+        echo "dadas";die;
           $form = new FormProcessor();
           $processData = $form->processFormData($data);
           return $processData;

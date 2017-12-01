@@ -32,5 +32,6 @@ return [
     'Emails',
     'Time',
     'Cms',
-    'Test'
+    'Test',
+    'Invoice'
 ];

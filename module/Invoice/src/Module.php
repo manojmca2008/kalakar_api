@@ -1,6 +1,6 @@
 <?php
 
-namespace Test;
+namespace Invoice;
 
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\ResultSet\ResultSet;
@@ -29,7 +29,6 @@ class Module implements ConfigProviderInterface {
     public function getServiceConfig() {
         return [
             'factories' => [
-               
             ],
         ];
     }
@@ -37,13 +36,13 @@ class Module implements ConfigProviderInterface {
     public function getControllerConfig() {
         return [
             'factories' => [
-                Controller\TestController::class => function($container) {
-                    return new Controller\TestController(
+                Controller\SmsController::class => function($container) {
+                    return new Controller\SmsController(
                             $container->get()
                     );
                 },
-                Controller\TestingController::class => function($container) {
-                    return new Controller\TestingController(
+                Controller\NotificationController::class => function($container) {
+                    return new Controller\NotificationController(
                             $container->get()
                     );
                 },
