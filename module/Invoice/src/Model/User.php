@@ -1,6 +1,6 @@
 <?php
 
-namespace User\Model;
+namespace Invoice\Model;
 
 use MCommons\Model\AbstractModel;
 use Zend\Db\Sql\Select;
@@ -37,8 +37,33 @@ class User extends AbstractModel {
         $select->where(array(
             'status' => 1,
         ));
-        $userDetail = $this->_tableGateway->selectWith($select)->toArray();
-        return $userDetail;
+        $usersList = $this->_tableGateway->selectWith($select)->toArray();
+        return $usersList;
+    }
+    public function getOtp($otp) {
+        $select = new Select ();
+        $select->from($this->_tableGateway->getTable());
+        $select->columns(array(
+            '*'
+        ));
+        $select->where(array(
+            'otp' => $otp,
+        ));
+        $usersList = $this->_tableGateway->selectWith($select)->toArray();
+        return $usersList;
+    }
+    public function getUserDetails($email) {
+        $select = new Select ();
+        $select->from($this->_tableGateway->getTable());
+        $select->columns(array(
+            '*'
+        ));
+        $select->where(array(
+            'status' => 1,
+            'email'=>$email
+        ));
+        $userDetails = $this->_tableGateway->selectWith($select)->current();
+        return $userDetails;
     }
 
     public function checkUser($email) {
@@ -53,20 +78,6 @@ class User extends AbstractModel {
         ));
         $userDetail = $this->_tableGateway->selectWith($select)->current();
         return $userDetail;
-    }
-    
-    public function getUserDetails($id) {
-        $select = new Select ();
-        $select->from($this->_tableGateway->getTable());
-        $select->columns(array(
-            '*'
-        ));
-        $select->where(array(
-            'status' => 1,
-            'id' =>$id,
-        ));
-        $usersList = $this->_tableGateway->selectWith($select)->toArray();
-        return $usersList;
     }
 
     public function update($data) {

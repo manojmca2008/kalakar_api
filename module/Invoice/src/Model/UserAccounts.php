@@ -1,23 +1,17 @@
 <?php
 
-namespace User\Model;
+namespace Invoice\Model;
 
 use MCommons\Model\AbstractModel;
 use Zend\Db\Sql\Select;
 use Zend\Db\TableGateway\TableGatewayInterface;
 
-class User extends AbstractModel {
+class UserAccounts extends AbstractModel {
 
     public $id;
     public $user_name;
     public $first_name;
     public $last_name;
-    public $email;
-    public $password;
-    public $mobile;
-    public $phone;
-    public $display_pic_url;
-    public $user_source;
     public $created_at;
     public $update_at;
     public $status;
@@ -28,34 +22,22 @@ class User extends AbstractModel {
         $this->_tableGateway = $tableGateway;
     }
 
-    public function getUsers() {
+    public function getUserAccounts($userId) {
         $select = new Select ();
         $select->from($this->_tableGateway->getTable());
         $select->columns(array(
-            '*'
+            'id',
+            'userId',
+            'accountName'
         ));
         $select->where(array(
             'status' => 1,
+            'userId' =>$userId,
         ));
-        $userDetail = $this->_tableGateway->selectWith($select)->toArray();
-        return $userDetail;
+        $usersList = $this->_tableGateway->selectWith($select)->toArray();
+        return $usersList;
     }
-
-    public function checkUser($email) {
-        $select = new Select ();
-        $select->from($this->_tableGateway->getTable());
-        $select->columns(array(
-            'status',
-            'id'
-        ));
-        $select->where(array(
-            'email' => $email,
-        ));
-        $userDetail = $this->_tableGateway->selectWith($select)->current();
-        return $userDetail;
-    }
-    
-    public function getUserDetails($id) {
+    public function getUserAccountDetails($id) {
         $select = new Select ();
         $select->from($this->_tableGateway->getTable());
         $select->columns(array(
@@ -65,8 +47,23 @@ class User extends AbstractModel {
             'status' => 1,
             'id' =>$id,
         ));
-        $usersList = $this->_tableGateway->selectWith($select)->toArray();
-        return $usersList;
+        //$select->order('id DESC');
+        $accountDetails = $this->_tableGateway->selectWith($select)->current();
+        return $accountDetails;
+    }
+    public function getUserAccountByLastSeclect($id) {
+        $select = new Select ();
+        $select->from($this->_tableGateway->getTable());
+        $select->columns(array(
+            '*'
+        ));
+        $select->where(array(
+            'status' => 1,
+            'id' =>$id,
+        ));
+        //$select->order('id DESC');
+        $accountDetails = $this->_tableGateway->selectWith($select)->current();
+        return $accountDetails;
     }
 
     public function update($data) {

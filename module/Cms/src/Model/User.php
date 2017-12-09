@@ -40,7 +40,7 @@ class User extends AbstractModel {
         $usersList = $this->_tableGateway->selectWith($select)->toArray();
         return $usersList;
     }
-    public function getUserDetails($id) {
+    public function getUserDetails($email) {
         $select = new Select ();
         $select->from($this->_tableGateway->getTable());
         $select->columns(array(
@@ -48,9 +48,9 @@ class User extends AbstractModel {
         ));
         $select->where(array(
             'status' => 1,
-            'id'=>$id
+            'email'=>$email
         ));
-        $userDetails = $this->_tableGateway->selectWith($select)->toArray();
+        $userDetails = $this->_tableGateway->selectWith($select)->current();
         return $userDetails;
     }
 

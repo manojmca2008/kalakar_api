@@ -29,6 +29,24 @@ class Module implements ConfigProviderInterface {
     public function getServiceConfig() {
         return [
             'factories' => [
+                Model\User::class => function($container) {
+                    $tableGateway = $container->get('UserGateway');
+                    return new Model\User($tableGateway);
+                },
+                'UserGateway' => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    return new TableGateway('users', $dbAdapter, null, $resultSetPrototype);
+                },
+                Model\UserAccounts::class => function($container) {
+                    $tableGateway = $container->get('UserAccountsGateway');
+                    return new Model\UserAccounts($tableGateway);
+                },
+                'UserAccountsGateway' => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    return new TableGateway('useraccounts', $dbAdapter, null, $resultSetPrototype);
+                },
             ],
         ];
     }
@@ -43,6 +61,21 @@ class Module implements ConfigProviderInterface {
                 },
                 Controller\NotificationController::class => function($container) {
                     return new Controller\NotificationController(
+                            $container->get()
+                    );
+                },
+                Controller\SignupController::class => function($container) {
+                    return new Controller\SignupController(
+                            $container->get()
+                    );
+                },
+                Controller\SigninController::class => function($container) {
+                    return new Controller\SigninController(
+                            $container->get()
+                    );
+                },
+                Controller\UserAccountsController::class => function($container) {
+                    return new Controller\UserAccountsController(
                             $container->get()
                     );
                 },
