@@ -6,15 +6,27 @@ use Zend\Router\Http\Segment;
 return [
     'router' => [
         'routes' => [
-            'sms-send' => [
+            'resend-otp' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/api/invoice/sms-send[/:id]',
+                        'route'    => '/api/invoice/resend-otp[/:id]',
                     'constraints' => [
                         'id'     => '[a-zA-Z0-9]+',
                     ],
                     'defaults' => [
                         'controller' => Controller\SmsController::class,
+                    ],
+                ],
+            ],
+            'resend-email' => [
+                'type'    => Segment::class,
+                'options' => [
+                        'route'    => '/api/invoice/resend-email[/:id]',
+                    'constraints' => [
+                        'id'     => '[a-zA-Z0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\EmailController::class,
                     ],
                 ],
             ],

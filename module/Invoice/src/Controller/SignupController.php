@@ -33,7 +33,7 @@ class SignupController extends AbstractRestfulController {
         if ($save) {
             //print_r($data);die;
             /*             * ******OTP send to user ************* */
-            // $this->sendOtp($data['phone'],$otp);
+            $this->sendOtp($data['phone'],$otp);
             /*             * ******************Send user registration mail ************* */
             $data['userId'] = $userModel->id;
             $accountDetails = $this->addAccount($data);
@@ -53,25 +53,22 @@ class SignupController extends AbstractRestfulController {
     }
 
     public function sendOtp($phone, $otp) {
-        $message = "Welcome to Incred. This is your six digit otp number " . $otp . " Please enter this six digit otp to complete your registration at Incred. ";
+        $message = "Welcome to Incred. This is your six digit (OTP) number " . $otp . " Please enter this six digit (OTP) to complete your registration at Incred. ";
         $smsdata = [
-            'phone' => $data['phone'],
+            'phone' => $phone,
             'message' => $message,
         ];
         $object = new SmsSending();
         $res = $object->sendSms($smsdata);
     }
 
-    public function sendMail($data) {
-        $template = 'email-template/user-registration';
+    public function sendMail($mailData) {
+        $template = 'email-template/send-otp';
         $layout = 'email-layout/default';
-        $subject = 'this is a test mail';
+        $subject = 'One Time Password';
 
         $variables = array(
-            'name' => 'manoj',
-            'phone' => 9716835598,
-            'email' => 'manoj841922@gmail.com',
-            'message' => 'this is a test mail',
+            'otp' => $mailData['otp'],
         );
         $layoutVariables = array(
             'name' => 'manoj',
@@ -80,9 +77,9 @@ class SignupController extends AbstractRestfulController {
             'message' => 'this is a test mail',
         );
         $data = array(
-            'receiver' => ['manoj.s.singhal@gmail.com'],
+            'receiver' => [$mailData['email']],
             'sender' => 'manoj841922@gmail.com',
-            'senderName' => 'manoj singhal',
+            'senderName' => 'Incred',
             'template' => $template,
             'layout' => $layout,
             'subject' => $subject,
