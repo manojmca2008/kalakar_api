@@ -42,7 +42,7 @@ class Module {
 
         $sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'addServiceLocator'], 999);
         //$sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'getUserAgent'], 998);
-        //$sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'checkAndAddRedis'], 997);
+        $sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'checkAndAddRedis'], 997);
         //  $sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'authenticate'], 995);
 
         $sharedEventManager->attach(\Zend\Mvc\Controller\AbstractRestfulController::class, MvcEvent::EVENT_DISPATCH, [$this, 'postProcess'], - 100);

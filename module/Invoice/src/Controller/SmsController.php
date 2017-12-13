@@ -23,7 +23,7 @@ class SmsController extends AbstractRestfulController {
         ];
         $object = new SmsSending();
         $response = $object->sendSms($smsData);
-        //$this->sendMail($smsData);
+        $this->sendMail($smsData);
         if ($response) {
             $userModel = $this->getServiceLocator(User::class);
             $userModel->id = $data['userId'];

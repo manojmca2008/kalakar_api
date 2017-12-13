@@ -387,8 +387,8 @@ class StaticFunctions {
 
         $content = $renderer->render($view);
         $layoutView->setVariables($data['layoutVariables']);
-        $content .= $renderer->render($layoutView);
-        print_r($content);die;
+        //$content = $renderer->render($layoutView);
+        //print_r($content);die;
         if (is_array($data['receiver'])) {
             foreach ($data['receiver'] as $reciever) {
                 $mail = new Message();

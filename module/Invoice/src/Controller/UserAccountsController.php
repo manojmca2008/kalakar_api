@@ -7,7 +7,8 @@ use Invoice\Model\User;
 use MCommons\Controller\AbstractRestfulController;
 
 class UserAccountsController extends AbstractRestfulController {
-
+    
+    protected $_redisCache = false;
     public function getList() {
         $userId = (int) $this->getQueryParams('userId',false);
         $userAccountModel = $this->getServiceLocator(UserAccounts::class);
@@ -19,6 +20,15 @@ class UserAccountsController extends AbstractRestfulController {
     }
     
     public function get($id) {
+//        $this->_redisCache = \MCommons\StaticFunctions::getRedisCache();
+//        //$config = $this->getServiceLocator('config');
+//        if ($this->_redisCache) {
+//            $data = ['name'=>'manoj','email'=>'manoj841922@gmail.com'];
+//            $this->_redisCache->setItem('userDetail', $data);
+//            $items = $this->_redisCache->getItem('userDetail');
+//            print_r($items);
+//            echo "sdads";die;
+//        }
         $id = (int) $id;
         $userAccountModel = $this->getServiceLocator(UserAccounts::class);
         $userModel = $this->getServiceLocator(User::class);

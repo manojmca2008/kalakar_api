@@ -79,6 +79,21 @@ class Module implements ConfigProviderInterface {
                             $container->get()
                     );
                 },
+                Controller\ResetPasswordController::class => function($container) {
+                    return new Controller\ResetPasswordController(
+                            $container->get()
+                    );
+                },
+                Controller\ResetPasswordController::class => function($container) {
+                    return new Controller\ResetPasswordController(
+                            $container->get()
+                    );
+                },
+                Controller\ForgetPasswordController::class => function($container) {
+                    return new Controller\ForgetPasswordController(
+                            $container->get()
+                    );
+                },
             ],
         ];
     }

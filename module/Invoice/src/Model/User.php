@@ -44,12 +44,14 @@ class User extends AbstractModel {
         $select = new Select ();
         $select->from($this->_tableGateway->getTable());
         $select->columns(array(
-            '*'
+            'phone',
+            'email',
+            'firstName'
         ));
         $select->where(array(
             'otp' => $otp,
         ));
-        $usersList = $this->_tableGateway->selectWith($select)->toArray();
+        $usersList = $this->_tableGateway->selectWith($select)->current();
         return $usersList;
     }
     public function getUserDetails($email) {
@@ -71,10 +73,24 @@ class User extends AbstractModel {
         $select->from($this->_tableGateway->getTable());
         $select->columns(array(
             'status',
-            'id'
+            'id',
+            'firstName'
         ));
         $select->where(array(
             'email' => $email,
+        ));
+        $userDetail = $this->_tableGateway->selectWith($select)->current();
+        return $userDetail;
+    }
+    
+    public function checkUserIdentity($identity) {
+        $select = new Select ();
+        $select->from($this->_tableGateway->getTable());
+        $select->columns(array(
+            'checkUserIdentity',
+        ));
+        $select->where(array(
+            'forgetPassIdentity' => $identity,
         ));
         $userDetail = $this->_tableGateway->selectWith($select)->current();
         return $userDetail;

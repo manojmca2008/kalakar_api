@@ -25,6 +25,8 @@ return [
         'template_map' => [
             'email-layout/default' => BASE_DIR . '/module/Emails/src/Mails/layouts/default.phtml',
             'email-template/send-otp' => BASE_DIR . '/module/Emails/src/Mails/templates/send-otp.phtml',
+            'email-template/forget-password' => BASE_DIR . '/module/Emails/src/Mails/templates/forget-password.phtml',
+            'email-template/welcome-incred' => BASE_DIR . '/module/Emails/src/Mails/templates/welcome-incred.phtml',
             'email-template/user-registration' => BASE_DIR . '/module/Emails/src/Mails/templates/01_Welcome-Friend.phtml',
             'email-template/user-reservation-confirmation' => __DIR__ . '/../Mails/User/templates/reservation-placed.phtml',
             'email-template/munchado-customer-reservation-confirmation' => __DIR__ . '/../Mails/User/templates/22_Reservation-From-a-MunchAdo-Customer.phtml',

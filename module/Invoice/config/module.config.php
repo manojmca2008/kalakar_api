@@ -45,7 +45,7 @@ return [
             'invoice-user-signup' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/api/invoice/signup[/:id]',
+                    'route'    => '/api/invoice/signup',
                     'constraints' => [
                         'id'     => '[a-zA-Z0-9]+',
                     ],
@@ -75,6 +75,42 @@ return [
                     ],
                     'defaults' => [
                         'controller' => Controller\UserAccountsController::class,
+                    ],
+                ],
+            ],
+            'reset-password' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/invoice/reset-password[/:id]',
+                    'constraints' => [
+                        'id'     => '[a-zA-Z0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\ResetPasswordController::class,
+                    ],
+                ],
+            ],
+            'forget-password' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/invoice/forget-password[/:id]',
+                    'constraints' => [
+                        'id'     => '[a-zA-Z0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\ForgetPasswordController::class,
+                    ],
+                ],
+            ],
+            'otp-varify' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/invoice/validate-otp[/:id]',
+                    'constraints' => [
+                        'id'     => '[a-zA-Z0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\SignupController::class,
                     ],
                 ],
             ],

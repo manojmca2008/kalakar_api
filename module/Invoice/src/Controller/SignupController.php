@@ -11,12 +11,12 @@ class SignupController extends AbstractRestfulController {
 
     public function create($data) {
         if (isset($data['email']) && empty($data['email'])) {
-            throw new \Exception("Email Id Can Not Be Null", 400);
+            throw new \Exception("Email address can not be blank", 400);
         }
         $userModel = $this->getServiceLocator(User::class);
         $checkUser = $userModel->checkUser($data['email']);
         if (count($checkUser) > 0 && $checkUser['status'] == 1) {
-            throw new \Exception("Account Already exist with this email", 400);
+            throw new \Exception("The email address is already in use by another account.", 400);
         }
         $otp = mt_rand(100000, 999999);
         $data = [
@@ -33,13 +33,13 @@ class SignupController extends AbstractRestfulController {
         if ($save) {
             //print_r($data);die;
             /*             * ******OTP send to user ************* */
-            $this->sendOtp($data['phone'],$otp);
+            //$this->sendOtp($data['phone'],$otp);
             /*             * ******************Send user registration mail ************* */
             $data['userId'] = $userModel->id;
             $accountDetails = $this->addAccount($data);
-            //$this->sendMail($data);
+            $this->sendMail($data);
             $userDetails = $userModel->getUserDetails($data['email']);
-            $response = ['accountDetails'=>(array) $accountDetails,'userDetails'=>(array) $userDetails];
+            $response = ['accountDetails' => (array) $accountDetails, 'userDetails' => (array) $userDetails];
             return $response;
         }
     }
@@ -48,7 +48,22 @@ class SignupController extends AbstractRestfulController {
         $userModel = $this->getServiceLocator(\Invoice\Model\User::class);
         $userDetails = $userModel->getOtp($id);
         if (!empty($userDetails)) {
-            return $userDetails;
+            $mailData = [
+                'name'=>$userDetails->firstName,
+                'email'=>$userDetails->email
+            ];
+            $this->sendWelcomeMail($mailData);
+            return [
+                'phone' => $userDetails->phone,
+                'email' => $userDetails->email,
+                'status'=>'varified'
+            ];
+        }else{
+            return [
+                'phone' => $userDetails->phone,
+                'email' => $userDetails->email,
+                'status'=>'failed'
+            ];
         }
     }
 
@@ -69,6 +84,8 @@ class SignupController extends AbstractRestfulController {
 
         $variables = array(
             'otp' => $mailData['otp'],
+            'name' => $mailData['firstName'],
+            'phone' => $mailData['phone'],
         );
         $layoutVariables = array(
             'name' => 'manoj',
@@ -103,13 +120,36 @@ class SignupController extends AbstractRestfulController {
         if ($save) {
             $accountDetails = $userAccounts->getUserAccountDetails($userAccounts->id);
             $userModel->id = $data['userId'];
-            $update = $userModel->update(['selectedAccountId'=>$userAccounts->id]);
+            $update = $userModel->update(['selectedAccountId' => $userAccounts->id]);
             if (!empty($accountDetails)) {
                 return $accountDetails;
             }
         } else {
             throw new \Exception("Issue in account creation", 400);
         }
+    }
+    public function sendWelcomeMail($mailData) {
+        $template = 'email-template/welcome-incred';
+        $layout = 'email-layout/default';
+        $subject = 'Welcome To Incred';
+
+        $variables = array(
+            'name' => $mailData['name'],
+        );
+        $layoutVariables = array(
+            'name' => 'manoj',
+        );
+        $data = array(
+            'receiver' => [$mailData['email']],
+            'sender' => 'manoj841922@gmail.com',
+            'senderName' => 'Incred',
+            'template' => $template,
+            'layout' => $layout,
+            'subject' => $subject,
+            'variables' => $variables,
+            'layoutVariables' => $layoutVariables
+        );
+        $mail = \MCommons\StaticFunctions::sendMail($data);
     }
 
 }
